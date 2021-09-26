@@ -62,12 +62,22 @@ var liComp = {
                 this.closeEvent();
             })();
         },
+        handleCloseAllClick: function() {
+            this.url.children.forEach(cu => this.handleCloseClick(cu.tab));
+            this.closeEvent();
+        }
     },
     render() {
         let icon = Vue.h('img', {class: 'icon', src: this.url.icon});
         if (this.url.children) {
             return Vue.h('div', {class: 'level-0', style: {listStyle: 'none'}}, [
-                Vue.h('div', {class: 'head'}, [icon, " ", this.url.name, "(", this.url.children.length, ")"]),
+                Vue.h('div', {class: 'head'},
+                    [
+                        icon, " ",
+                        this.url.name,
+                        "(", this.url.children.length, ")",
+                        Vue.h('span', {class: 'close-link', onClick: (event) => { this.handleCloseAllClick(); }}, ' close all')
+                    ]),
                 this.url.children.map(cu => {
                     return Vue.h('div', {class: 'level-1 leaf'}, [
                         Vue.h('span', {class: 'bullet'}, '•'),
