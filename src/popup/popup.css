@@ -1,0 +1,72 @@
+﻿body {
+    min-width: 450px;
+    margin: 0;
+    padding: 0;
+}
+
+#main ul {
+    padding-left: 15px;
+}
+
+.bullet {
+    max-width: 15px;
+    justify-self: start;
+}
+
+.tab-link:hover {
+    color: blue;
+}
+
+.tab-link {
+    cursor: pointer;
+    justify-self: start;
+}
+
+.close-link {
+    cursor: pointer;
+    max-width: 15px;
+    font-weight: 700;
+    justify-self: end;
+}
+
+.close-link:hover {
+    color: red;
+}
+
+.icon {
+    max-height: 15px;
+    max-width: 15px;
+}
+
+.level-0 {
+}
+
+.level-1 {
+    padding-left: 15px;
+}
+
+.level-2 {
+    padding-left: 30px;
+}
+
+.leaf {
+    display: grid;
+    grid-template-columns: 15px auto 15px;
+    border-bottom: 1px dotted #ccc;
+}
+
+.leaf:hover {
+    background-color: salmon;
+}
+
+.head {
+    font-weight: 700;
+}
+
+.search {
+    width: 100%;
+}
+
+.tab-list {
+    padding: 5px;
+}
