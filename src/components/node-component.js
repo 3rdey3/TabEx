@@ -1,5 +1,5 @@
 ﻿(function (Vue, window) {
-    window.liComp = {
+    let node = {
         props: ['url', 'closeEvent'],
         methods: {
             handleClick: function (tab) {
@@ -49,4 +49,9 @@
             }
         }
     };
+
+    window.TabEx = window.TabEx || {};
+    window.TabEx.components = window.TabEx.components || {};
+
+    window.TabEx.components.node = node;
 })(Vue, window);

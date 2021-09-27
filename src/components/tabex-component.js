@@ -41,7 +41,7 @@
         });
     }
 
-    window.TabEx = {
+    let TabEx = {
         data() {
             return {
                 urls: ["loading..."],
@@ -70,7 +70,7 @@
             }
         },
         render() {
-            let liComp = Vue.resolveComponent('li-comp');
+            let nodeComp = Vue.resolveComponent('node-comp');
             return Vue.h('div',
                 [
                     Vue.h('input', {
@@ -85,10 +85,15 @@
                     }),
                     Vue.h('div', {class: 'tab-list'},
                         this.urls.map(url => {
-                            return Vue.h(liComp, { url: url, closeEvent: () => { this.applyFilter(this.searchText); }});
+                            return Vue.h(nodeComp, { url: url, closeEvent: () => { this.applyFilter(this.searchText); }});
                         }))
                 ]
             );
         }
-    }
+    };
+
+    window.TabEx = window.TabEx || {};
+    window.TabEx.components = window.TabEx.components || {};
+
+    window.TabEx.components.TabEx = TabEx;
 })(Vue, Fuse, window);
