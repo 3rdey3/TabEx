@@ -75,8 +75,8 @@ var liComp = {
                     [
                         icon, " ",
                         this.url.name,
-                        "(", this.url.children.length, ")",
-                        Vue.h('span', {class: 'close-link', onClick: (event) => { this.handleCloseAllClick(); }}, ' close all')
+                        " - (", this.url.children.length, ") - ",
+                        Vue.h('span', {class: 'close-link', onClick: (event) => { this.handleCloseAllClick(); }}, 'close all')
                     ]),
                 this.url.children.map(cu => {
                     return Vue.h('div', {class: 'level-1 leaf'}, [
