@@ -63,8 +63,11 @@ var liComp = {
             })();
         },
         handleCloseAllClick: function() {
-            this.url.children.forEach(cu => this.handleCloseClick(cu.tab));
-            this.closeEvent();
+            let ids = this.url.children.map(cu => cu.tab.id);
+            (async () => {
+                await chrome.tabs.remove(ids);
+                this.closeEvent();
+            })();
         }
     },
     render() {
