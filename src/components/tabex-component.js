@@ -6,19 +6,20 @@
             return {
                 urls: ["loading..."],
                 searchText: '',
-                filterByRoot: false
+                filterByRoot: false,
+                filterByCW: false,
             }
         },
         mounted() {
             (async() => {
-                var urls = await parser.getAllTabUrls();
+                var urls = await parser.getAllTabUrls(this.filterByCW);
                 this.urls = this.filterByRoot ? parser.parseByHostRoot(urls) : parser.parseByHost(urls);
             })();
         },
         methods: {
             applyFilter: function (filterText) {
                 (async () => {
-                    let urls = await parser.getAllTabUrls();
+                    let urls = await parser.getAllTabUrls(this.filterByCW);
                     let purls = this.filterByRoot ? parser.parseByHostRoot(urls) : parser.parseByHost(urls);
                     this.searchText = filterText;
                     if (!!filterText && filterText.length) {
@@ -45,15 +46,26 @@
                         }
                     }),
                     Vue.h('div', {class: 'toolbar'},
-                        Vue.h('button', {
-                            type: 'button',
-                            title: 'Root Toggle',
-                            class: this.filterByRoot ? 'active' : '',
-                            onClick: (event) => {
-                                this.filterByRoot = !this.filterByRoot;
-                                this.applyFilter();
-                            }
-                        }, 'R')),
+                        [
+                            Vue.h('button', {
+                                type: 'button',
+                                title: 'Root Toggle',
+                                class: this.filterByRoot ? 'active' : '',
+                                onClick: (event) => {
+                                    this.filterByRoot = !this.filterByRoot;
+                                    this.applyFilter();
+                                }
+                            }, 'R'),
+                            Vue.h('button', {
+                                type: 'button',
+                                title: 'Current Window Toggle',
+                                class: this.filterByCW ? 'active' : '',
+                                onClick: (event) => {
+                                    this.filterByCW = !this.filterByCW;
+                                    this.applyFilter();
+                                }
+                            }, 'C')
+                        ]),
                     Vue.h('div', {class: 'tab-list'},
                         this.urls.map(url => {
                             return Vue.h(nodeComp, { url: url, closeEvent: () => { this.applyFilter(this.searchText); }});

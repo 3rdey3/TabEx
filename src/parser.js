@@ -9,8 +9,12 @@
     };
     parser.getCurrentTab = getCurrentTab;
 
-    async function getAllTabUrls() {
-        let tabs = await chrome.tabs.query({});
+    async function getAllTabUrls(filterByCW) {
+        let queryOptions = {};
+        if (filterByCW) {
+            queryOptions = { currentWindow: true };
+        }
+        let tabs = await chrome.tabs.query(queryOptions);
         let urls = tabs.map(t => {return { url: new URL(t.url), tab: t }});
         return urls;
     };
