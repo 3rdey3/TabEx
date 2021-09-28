@@ -50,7 +50,6 @@
         }
     };
 
-    window.TabEx = window.TabEx || {};
     window.TabEx.components = window.TabEx.components || {};
 
     window.TabEx.components.node = node;

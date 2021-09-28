@@ -92,7 +92,6 @@
         }
     };
 
-    window.TabEx = window.TabEx || {};
     window.TabEx.components = window.TabEx.components || {};
 
     window.TabEx.components.TabEx = TabEx;
