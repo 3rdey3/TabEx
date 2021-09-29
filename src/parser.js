@@ -100,5 +100,17 @@
     };
     parser.parseByHost = parseByHost;
 
+    function parseByOpener(urls) {
+        urls.forEach(url => {
+            if (!!url.tab.openerTabId) {
+                let opener = urls.find(u => u.tab.id === url.tab.openerTabId);
+                opener.children = opener.children || [];
+                opener.children.push(url);
+            }
+        });
+        return urls.filter(url => !url.tab.openerTabId);
+    }
+    parser.parseByOpener = parseByOpener;
+
     window.TabEx.parser = parser;
 })(window, chrome);

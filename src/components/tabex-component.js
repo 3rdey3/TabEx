@@ -8,11 +8,15 @@
                 searchText: '',
                 filterByRoot: false,
                 filterByCW: false,
+                filterByOpener: false,
             }
         },
         mounted() {
             (async() => {
                 var urls = await parser.getAllTabUrls(this.filterByCW);
+                if (this.filterByOpener) {
+                    urls = parser.parseByOpener(urls);
+                }
                 this.urls = this.filterByRoot ? parser.parseByHostRoot(urls) : parser.parseByHost(urls);
             })();
         },
@@ -20,6 +24,9 @@
             applyFilter: function (filterText) {
                 (async () => {
                     let urls = await parser.getAllTabUrls(this.filterByCW);
+                    if (this.filterByOpener) {
+                        urls = parser.parseByOpener(urls);
+                    }
                     let purls = this.filterByRoot ? parser.parseByHostRoot(urls) : parser.parseByHost(urls);
                     this.searchText = filterText;
                     if (!!filterText && filterText.length) {
@@ -64,11 +71,20 @@
                                     this.filterByCW = !this.filterByCW;
                                     this.applyFilter();
                                 }
-                            }, 'C')
+                            }, 'C'),
+                            Vue.h('button', {
+                                type: 'button',
+                                title: 'Opener Group Toggle',
+                                class: this.filterByOpener ? 'active' : '',
+                                onClick: (event) => {
+                                    this.filterByOpener = !this.filterByOpener;
+                                    this.applyFilter();
+                                }
+                            }, 'O'),
                         ]),
                     Vue.h('div', {class: 'tab-list'},
                         this.urls.map(url => {
-                            return Vue.h(nodeComp, { url: url, closeEvent: () => { this.applyFilter(this.searchText); }});
+                            return Vue.h(nodeComp, { url: url, showChild: this.filterByOpener, closeEvent: () => { this.applyFilter(this.searchText); }});
                         }))
                 ]
             );
