@@ -11,7 +11,7 @@
             handleClick: function (tab) {
                 (async () => {
                     await chrome.tabs.update(tab.id, { selected: true });
-                    let winInfo = await chrome.windows.get(tab.windowId);
+                    let window = await chrome.windows.get(tab.windowId);
                     if (!window.focused) {
                         await chrome.windows.update(tab.windowId, { focused: true });
                     }
