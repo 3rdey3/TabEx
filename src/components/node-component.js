@@ -1,6 +1,11 @@
-﻿(function (Vue, window) {
+﻿(function (window) {
+    let {Vue, Vuex} = window;
+    let {mapState} = Vuex;
     let node = {
-        props: ['url', 'showChild', 'closeEvent'],
+        props: ['url', 'closeEvent'],
+        computed: mapState({
+            showChild: 'filterByOpener'
+        }),
         methods: {
             handleCloseAllClick: function() {
                 let ids = this.url.children.map(cu => cu.tab.id);
@@ -24,11 +29,11 @@
                         ]),
                     this.url.children.map(cu => {
                         let cNodes = [
-                            Vue.h(leafComp, {closeEvent: this.closeEvent, url: cu, showChild: this.showChild})
+                            Vue.h(leafComp, {closeEvent: this.closeEvent, url: cu})
                         ];
                         if (this.showChild && !!cu.children && !!cu.children.length) {
                             cNodes.push(
-                                Vue.h('div', {class: 'level-2'}, cu.children.map(cuc => Vue.h(leafComp, {url: cuc, showChild: this.showChild, closeEvent: this.closeEvent})))
+                                Vue.h('div', {class: 'level-2'}, cu.children.map(cuc => Vue.h(leafComp, {url: cuc, closeEvent: this.closeEvent})))
                             );
                         }
                         return Vue.h('div', {class: 'level-1'}, cNodes);
@@ -43,4 +48,4 @@
     window.TabEx.components = window.TabEx.components || {};
 
     window.TabEx.components.node = node;
-})(Vue, window);
+})(window);

@@ -1,4 +1,6 @@
-﻿(function (Vue, Fuse, window) {
+﻿(function (window) {
+    let {Vue, Vuex, Fuse} = window;
+    let {mapState} = Vuex;
     let parser = window.TabEx.parser;
 
     let TabEx = {
@@ -6,11 +8,13 @@
             return {
                 urls: ["loading..."],
                 searchText: '',
-                filterByRoot: false,
-                filterByCW: false,
-                filterByOpener: false,
             }
         },
+        computed: mapState([
+            'filterByRoot',
+            'filterByCW',
+            'filterByOpener',
+        ]),
         mounted() {
             (async() => {
                 var urls = await parser.getAllTabUrls(this.filterByCW);
@@ -59,7 +63,7 @@
                                 title: 'Root Toggle',
                                 class: this.filterByRoot ? 'active' : '',
                                 onClick: (event) => {
-                                    this.filterByRoot = !this.filterByRoot;
+                                    this.$store.commit('toggleFilterByRoot');
                                     this.applyFilter();
                                 }
                             }, 'R'),
@@ -68,7 +72,7 @@
                                 title: 'Current Window Toggle',
                                 class: this.filterByCW ? 'active' : '',
                                 onClick: (event) => {
-                                    this.filterByCW = !this.filterByCW;
+                                    this.$store.commit('toggleFilterByCW');
                                     this.applyFilter();
                                 }
                             }, 'C'),
@@ -77,14 +81,14 @@
                                 title: 'Opener Group Toggle',
                                 class: this.filterByOpener ? 'active' : '',
                                 onClick: (event) => {
-                                    this.filterByOpener = !this.filterByOpener;
+                                    this.$store.commit('toggleFilterByOpener');
                                     this.applyFilter();
                                 }
                             }, 'O'),
                         ]),
                     Vue.h('div', {class: 'tab-list'},
                         this.urls.map(url => {
-                            return Vue.h(nodeComp, { url: url, showChild: this.filterByOpener, closeEvent: () => { this.applyFilter(this.searchText); }});
+                            return Vue.h(nodeComp, { url: url, closeEvent: () => { this.applyFilter(this.searchText); }});
                         }))
                 ]
             );
@@ -94,4 +98,4 @@
     window.TabEx.components = window.TabEx.components || {};
 
     window.TabEx.components.TabEx = TabEx;
-})(Vue, Fuse, window);
+})(window);

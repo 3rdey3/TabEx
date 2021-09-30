@@ -1,6 +1,12 @@
-﻿(function (Vue, window) {
+﻿(function (window) {
+    let {Vue, Vuex} = window;
+    let {mapState} = Vuex;
+
     let leaf = {
-        props: ['url', 'showChild', 'closeEvent'],
+        props: ['url', 'closeEvent'],
+        computed: mapState({
+            showChild: 'filterByOpener'
+        }),
         methods: {
             handleClick: function (tab) {
                 (async () => {
@@ -37,7 +43,7 @@
             ];
             if (this.showChild && !!cu.tab.openerTabId && !!cu.children && !!cu.children.length) {
                 cNodes.push(
-                    cu.children.map(cuc => Vue.h(leafComp, {url: cuc, showChild: this.showChild, closeEvent: this.closeEvent}))
+                    cu.children.map(cuc => Vue.h(leafComp, {url: cuc, closeEvent: this.closeEvent}))
                 );
             }
             return Vue.h('div', {}, cNodes);
@@ -46,4 +52,4 @@
 
     window.TabEx.components = window.TabEx.components || {};
     window.TabEx.components.leaf = leaf;
-})(Vue, window);
+})(window);
