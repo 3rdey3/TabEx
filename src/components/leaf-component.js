@@ -5,7 +5,8 @@
     let leaf = {
         props: ['url', 'closeEvent'],
         computed: mapState({
-            showChild: 'filterByOpener'
+            showChild: 'filterByOpener',
+            selectedTabId: 'selectedTabId',
         }),
         methods: {
             handleClick: function (tab) {
@@ -32,7 +33,7 @@
                     Vue.h('span', {class: 'bullet'}, '•'),
                     Vue.h('div', {
                         title: cu.tab.url,
-                        class: 'tab-link',
+                        class: 'tab-link' + (this.selectedTabId === cu.tab.id ? ' selected' : ''),
                         onClick: (event) => {this.handleClick(cu.tab);}
                     }, [
                         !!cu.children && !!cu.children.length ? '(' + cu.children.length + ') ' : '',

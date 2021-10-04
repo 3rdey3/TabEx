@@ -22,6 +22,10 @@
     justify-self: start;
 }
 
+.tab-link.selected {
+    background-color: powderblue;
+}
+
 .close-link {
     cursor: pointer;
     max-width: 15px;

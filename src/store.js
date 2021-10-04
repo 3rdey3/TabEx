@@ -6,6 +6,7 @@
                 filterByRoot: false,
                 filterByCW: false,
                 filterByOpener: false,
+                selectedTabId: 0,
             }
         },
         mutations: {
@@ -17,6 +18,9 @@
             },
             toggleFilterByOpener(state) {
                 state.filterByOpener = !state.filterByOpener;
+            },
+            setSelectedTabId(state, id) {
+                state.selectedTabId = id;
             },
         }
     });

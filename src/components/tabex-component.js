@@ -14,6 +14,7 @@
             'filterByRoot',
             'filterByCW',
             'filterByOpener',
+            'selectedTabId',
         ]),
         mounted() {
             (async() => {
@@ -50,11 +51,65 @@
                         type: 'text', class: 'search', autofocus: true,
                         onKeyup: event => {
                             if (event.key === 'Enter') {
-                                this.applyFilter(event.target.value);
+                                if (!!this.selectedTabId) {
+                                    (async () => {
+                                        await chrome.tabs.update(this.selectedTabId, { selected: true });
+                                        let tab = await chrome.tabs.get(this.selectedTabId);
+                                        let window = await chrome.windows.get(tab.windowId);
+                                        if (!window.focused) {
+                                            await chrome.windows.update(tab.windowId, { focused: true });
+                                        }
+                                    })();
+                                } else {
+                                    this.applyFilter(event.target.value);
+                                }
                                 event.stopPropagation();
                                 event.preventDefault();
                             }
-                        }
+                        },
+                        onKeydown: event => {
+                            if (event.ctrlKey) {
+                                if (event.code === 'KeyN') {
+                                    const ids = this.urls.flatMap(node => node.children.map(c => c.tab.id));
+                                    if (!this.selectedTabId) {
+                                        if (!!ids && !!ids.length) {
+                                            let id = ids[0];
+                                            this.$store.commit('setSelectedTabId', id);
+                                        }
+                                    } else {
+                                        let idx = ids.indexOf(this.selectedTabId);
+
+                                        let id = 0;
+                                        if (idx < ids.length - 1) {
+                                            id = ids[idx + 1];
+                                        } else {
+                                            id = ids[0];
+                                        }
+                                        this.$store.commit('setSelectedTabId', id);
+                                    }
+                                } else if (event.code === 'KeyP') {
+                                    const ids = this.urls.flatMap(node => node.children.map(c => c.tab.id));
+                                    if (!this.selectedTabId) {
+                                        if (!!ids && !!ids.length) {
+                                            let id = ids[ids.length - 1];
+                                            this.$store.commit('setSelectedTabId', id);
+                                        }
+                                    } else {
+                                        let idx = ids.indexOf(this.selectedTabId);
+
+                                        let id = 0;
+                                        if (idx >= 0) {
+                                            id = ids[idx - 1];
+                                        } else {
+                                            id = ids[ids.length - 1];
+                                        }
+                                        this.$store.commit('setSelectedTabId', id);
+                                    }
+                                }
+                                event.stopPropagation();
+                                event.preventDefault();
+                            }
+                        },
                     }),
                     Vue.h('div', {class: 'toolbar'},
                         [
@@ -99,3 +154,4 @@
 
     window.TabEx.components.TabEx = TabEx;
 })(window);
+
