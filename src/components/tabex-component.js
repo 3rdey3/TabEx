@@ -65,6 +65,16 @@
                                 }
                                 event.stopPropagation();
                                 event.preventDefault();
+                            } else if (event.key === 'Delete') {
+                                if (!!this.selectedTabId) {
+                                    (async () => {
+                                        await chrome.tabs.remove(this.selectedTabId);
+                                        this.$store.commit('setSelectedTabId', 0);
+                                        this.applyFilter(event.target.value);
+                                    })();
+                                }
+                                event.stopPropagation();
+                                event.preventDefault();
                             }
                         },
                         onKeydown: event => {
