@@ -6,6 +6,6 @@
     // app.component('node-comp', window.TabEx.components.node);
     app.use(store);
     app.mount('#main');
-    window.TabEx.app = app;
+    window.TabExOptions.app = app;
 })(window);
 
