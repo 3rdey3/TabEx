@@ -97,6 +97,8 @@
                                         }
                                         this.$store.commit('setSelectedTabId', id);
                                     }
+                                    event.stopPropagation();
+                                    event.preventDefault();
                                 } else if (event.code === 'KeyP') {
                                     const ids = this.urls.flatMap(node => node.children.map(c => c.tab.id));
                                     if (!this.selectedTabId) {
@@ -115,9 +117,9 @@
                                         }
                                         this.$store.commit('setSelectedTabId', id);
                                     }
+                                    event.stopPropagation();
+                                    event.preventDefault();
                                 }
-                                event.stopPropagation();
-                                event.preventDefault();
                             }
                         },
                     }),
