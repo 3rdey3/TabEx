@@ -29,17 +29,16 @@
             applyFilter: function (filterText) {
                 (async () => {
                     let urls = await parser.getAllTabUrls(this.filterByCW);
+                    if (!!filterText && filterText.length) {
+                        const fuse = new Fuse(urls, {threshold:0.3, minMatchCharLength: 5, keys: [ "tab.title", "tab.url" ]});
+                        urls = fuse.search(filterText).map(sr => sr.item);
+                        this.searchText = filterText;
+                    }
                     if (this.filterByOpener) {
                         urls = parser.parseByOpener(urls);
                     }
                     let purls = this.filterByRoot ? parser.parseByHostRoot(urls) : parser.parseByHost(urls);
-                    this.searchText = filterText;
-                    if (!!filterText && filterText.length) {
-                        const fuse = new Fuse(purls, {threshold:0.3, minMatchCharLength: 5, keys: [ "children.tab.title", "children.tab.url" ]});
-                        this.urls = fuse.search(filterText).map(sr => {return {...sr.item}});
-                    } else {
-                        this.urls = purls;
-                    }
+                    this.urls = purls;
                 })();
             }
         },
