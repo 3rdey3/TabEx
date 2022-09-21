@@ -79,3 +79,7 @@ button.active {
     font-weight: 700;
     border: 2px solid black;
 }
+
+.current-tab {
+    background-color: palegreen;
+}
